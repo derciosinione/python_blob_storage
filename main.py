@@ -59,7 +59,6 @@ def blob_exists(blob_name: str) -> bool:
     try:
         return blob_client.exists()
     except ResourceNotFoundError:
-        # em algumas versões do SDK ou em caso de permissão negação, capturamos o erro
         return False
 
 
@@ -103,11 +102,9 @@ def get_blob_url(blob_names: List[str]) -> Dict[str, str]:
             continue
 
         sas_token = generate_read_sas(name, 1)
-        sas_urls[name] = f"{account_url}/{container_name}/{name}?{sas_token}"
+        sas_urls[name] = sas_token
     
     return sas_urls
-
-
 
 
 def upload_document_unique(file_path: str, prefix: str = None, overwrite: bool = False) -> str:
@@ -162,16 +159,19 @@ if __name__ == "__main__":
     # nome_blob2 = upload_document_unique(path_name, overwrite=True)
     
     blob_names = [
-        "Dashboard.pdf",
-        "PedidosdeCompensasao.pdf",
-        "pedidosss.pdf"
+        # "Dashboard.pdf",
+        # "PedidosdeCompensasao.pdf",
+        # "pedidosss.pdf",
+        "Planta_marcada.pdf"
     ]
     
-    urls = get_blob_url(blob_names)
+    # urls = get_blob_url(blob_names)
     
     urls = get_blob_url(blob_names)
     print("URLs dos blobs:")
     for name, url in urls.items():
         print(f" - {name}: {url or 'NÃO ENCONTRADO'}")
     
+
+
 

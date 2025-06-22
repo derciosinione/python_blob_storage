@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/AzureBlob.iml" filepath="$PROJECT_DIR$/.idea/AzureBlob.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/azure-blob-upload-func.iml" filepath="$PROJECT_DIR$/.idea/azure-blob-upload-func.iml" />
     </modules>
   </component>
 </project>
