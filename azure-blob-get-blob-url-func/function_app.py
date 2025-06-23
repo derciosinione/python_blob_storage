@@ -46,7 +46,7 @@ def json_response(status: int, success: bool, message: str, data: dict = None) -
         headers=headers
     )
 
-@app.route(route="get_files/{project_id}", methods=["GET"])
+@app.route(route="document/project/{project_id}/", methods=["GET"])
 def get_files_by_project(req: func.HttpRequest) -> func.HttpResponse:
     logging.info("Pedido recebido para obter ficheiros por project_id.")
 
@@ -75,8 +75,10 @@ def get_files_by_project(req: func.HttpRequest) -> func.HttpResponse:
             blob_name = blob.name
             clean_name = blob_name.replace(f"{project_root}/", "")
             blob_urls.append({
+                "id": clean_name,
                 "name": clean_name,
-                "extension": os.path.splitext(clean_name)[1],
+                "uploadedAt": blob.creation_time.isoformat() if blob.creation_time else None,
+                "lastModified": blob.last_modified.isoformat() if blob.last_modified else None,
                 "size": blob.size,
                 "url": generate_read_sas(blob_name),
             })
