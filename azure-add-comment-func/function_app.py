@@ -13,8 +13,8 @@ app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
 COSMOS_URL = os.getenv("COSMOS_URL")
 COSMOS_KEY = os.getenv("COSMOS_KEY")
-COSMOS_DATABASE = os.getenv("COSMOS_DATABASE")
-COSMOS_CONTAINER = os.getenv("COSMOS_CONTAINER")
+COSMOS_DATABASE = os.getenv("DATABASE_NAME")
+COSMOS_CONTAINER = "ProjectComments"
 
 headers = { "Access-Control-Allow-Origin": "*" }
 
@@ -70,8 +70,8 @@ def add_project_comment(req: func.HttpRequest) -> func.HttpResponse:
             )
 
     except CosmosHttpResponseError as ce:
-        logging.error(f"Erro Cosmos: {ce}")
-        return json_response(500, False, "Erro ao comunicar com a base de dados.")
+        logging.error(f"Erro Cosmos: {ce.message}")
+        return json_response(500, False, f"Erro ao comunicar com a base de dados. \n  {ce}")
     except Exception as e:
         logging.error(f"Erro ao criar tarefa: {e}")
-        return json_response(500, False, "Erro interno ao criar tarefa.")
+        return json_response(500, False, f"Erro interno ao criar tarefa. \n {e}")

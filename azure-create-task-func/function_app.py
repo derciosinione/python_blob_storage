@@ -13,8 +13,8 @@ app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
 COSMOS_URL = os.getenv("COSMOS_URL")
 COSMOS_KEY = os.getenv("COSMOS_KEY")
-COSMOS_DATABASE = os.getenv("COSMOS_DATABASE")
-COSMOS_CONTAINER = os.getenv("COSMOS_CONTAINER")
+COSMOS_DATABASE = os.getenv("DATABASE_NAME")
+COSMOS_CONTAINER = "ProjectTasks"
 
 headers = { "Access-Control-Allow-Origin": "*" }
 

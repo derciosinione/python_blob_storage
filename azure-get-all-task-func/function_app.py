@@ -10,8 +10,8 @@ app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 # CosmosDB config from environment
 COSMOS_URL       = os.getenv("COSMOS_URL")
 COSMOS_KEY       = os.getenv("COSMOS_KEY")
-COSMOS_DATABASE  = os.getenv("COSMOS_DATABASE")
-COSMOS_CONTAINER = os.getenv("COSMOS_CONTAINER")
+COSMOS_DATABASE  = os.getenv("DATABASE_NAME")
+COSMOS_CONTAINER = "ProjectTasks"
 
 headers = { "Access-Control-Allow-Origin": "*" }
 
@@ -33,6 +33,10 @@ def get_project_tasks(req: func.HttpRequest) -> func.HttpResponse:
         project_id = req.route_params.get("projectId")
         if not project_id:
             return json_response(400, False, "O parâmetro projectId é obrigatório.")
+        
+        if not all([COSMOS_URL, COSMOS_KEY, COSMOS_DATABASE, COSMOS_CONTAINER]):
+            return json_response(500, False, "Variáveis de ambiente Cosmos DB em falta.")
+
 
         # Connect to Cosmos DB
         client = CosmosClient(COSMOS_URL, credential=COSMOS_KEY)
@@ -70,9 +74,9 @@ def get_project_tasks(req: func.HttpRequest) -> func.HttpResponse:
 
     except CosmosHttpResponseError as ce:
         logging.error(f"Erro Cosmos: {ce}")
-        return json_response(500, False, "Erro ao comunicar com a base de dados.")
+        return json_response(500, False, f"Erro ao comunicar com a base de dados. \n {ce}")
     except Exception as e:
         logging.error(f"Erro ao obter tarefas: {e}")
-        return json_response(500, False, "Erro interno ao obter tarefas.")
+        return json_response(500, False, f"Erro interno ao obter tarefas. \n {e}")
 
 
